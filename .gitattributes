@@ -1,0 +1,2 @@
+Phishing-Email-Detection-Using-Machine-Learning/data/archive/phishing_email.csv filter=lfs diff=lfs merge=lfs -text
+Phishing-Email-Detection-Using-Machine-Learning/data/preprocessed_data.pkl filter=lfs diff=lfs merge=lfs -text
