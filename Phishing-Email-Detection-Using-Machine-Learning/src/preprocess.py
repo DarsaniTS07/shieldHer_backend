@@ -16,6 +16,7 @@ def preprocess_data(input_file, output_data_file, output_vectorizer_file):
     # Vectorize the text using TF-IDF (limiting to 5000 features to avoid memory issues)
     vectorizer = TfidfVectorizer(max_features=5000)
     X = vectorizer.fit_transform(df['text']).toarray()
+    
 
     # Extract labels
     y = df['label'].values
