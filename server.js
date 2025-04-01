@@ -13,12 +13,14 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Logging middleware
+// Enhanced logging middleware
 app.use((req, res, next) => {
   console.log('Incoming request:', {
     method: req.method,
     url: req.url,
-    body: req.body
+    body: req.body,
+    ip: req.ip,
+    timestamp: new Date().toISOString()
   });
   next();
 });
@@ -26,13 +28,26 @@ app.use((req, res, next) => {
 // Routes
 app.use('/api/auth', authRoutes);
 
-// Error handling
+// Enhanced error handling
 app.use((err, req, res, next) => {
-  console.error("Unhandled error:", err);
-  res.status(500).json({ message: "Internal server error" });
+  console.error("Unhandled error:", {
+    error: err,
+    stack: err.stack,
+    request: {
+      method: req.method,
+      url: req.url,
+      body: req.body
+    }
+  });
+  res.status(500).json({ 
+    success: false,
+    message: "Internal server error",
+    error: process.env.NODE_ENV === 'development' ? err.message : undefined
+  });
 });
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 });
