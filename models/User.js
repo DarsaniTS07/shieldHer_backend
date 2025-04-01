@@ -46,6 +46,20 @@ module.exports = {
     );
   },
 
+  // Add these methods to your user model
+async findByGoogleId(googleId) {
+  const [rows] = await pool.query('SELECT * FROM users WHERE google_id = ?', [googleId]);
+  return rows[0];
+},
+
+async createGoogleUser({ googleId, email, name, picture }) {
+  const [result] = await pool.query(
+    'INSERT INTO users (google_id, email, username, avatar, is_verified) VALUES (?, ?, ?, ?, ?)',
+    [googleId, email, name, picture, true]
+  );
+  return { id: result.insertId, email, username: name };
+},
+
   async clearResetToken(id) {
     await pool.query(
       'UPDATE users SET reset_token = NULL, reset_token_expires = NULL WHERE id = ?',

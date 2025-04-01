@@ -194,5 +194,25 @@ exports.resetPassword = async (req, res) => {
 
 // Keep this for compatibility, but will use sendOTP instead
 exports.forgotPassword = async (req, res) => {
-  return exports.sendOTP(req, res);
+  exports.forgotPassword = async (req, res, next) => {
+    try {
+      const { email } = req.body;
+      const user = await User.findByEmail(email);
+      
+      if (!user) {
+        return res.status(404).json({ success: false, message: 'User not found' });
+      }
+      
+      // Don't allow password reset for Google-authenticated users
+      if (user.google_id) {
+        return res.status(400).json({ 
+          success: false, 
+          message: 'Google-authenticated users must use Google login' 
+        });
+        return exports.sendOTP(req, res);
+      }
+    } catch (err) {
+      next(err);
+    }
+  }
 };

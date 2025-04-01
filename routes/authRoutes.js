@@ -14,6 +14,8 @@ const otpLimiter = rateLimit({
 // Authentication routes
 router.post('/login', authController.login);
 router.post('/register', authController.register);
+// Add this with other authentication routes
+router.post('/google-login', authController.googleLogin);
 
 // Password routes with rate limiting
 router.post('/send-otp', otpLimiter, passwordController.sendOTP);
