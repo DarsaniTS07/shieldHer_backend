@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 require('dotenv').config();
+const phishingRoutes = require('./routes/phishingRoutes'); // ✅ Move this up
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/phishing', phishingRoutes); // ✅ Moved up before server start
 
 // Enhanced error handling
 app.use((err, req, res, next) => {
@@ -48,8 +50,8 @@ app.use((err, req, res, next) => {
   });
 });
 
-const PORT = process.env.PORT || 5001;
+// Start the server (Keep this at the bottom)
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`Server running on port ${PORT}`);
 });
