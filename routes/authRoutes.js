@@ -2,25 +2,30 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
 const passwordController = require('../controllers/passwordController');
+const reportController = require('../controllers/reportController'); // Make sure this path is correct
 const rateLimit = require('express-rate-limit');
 
-// Rate limiting for OTP requests
+// Rate limiting configurations
 const otpLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 3, // Limit each IP to 3 OTP requests per window
-  message: 'Too many OTP requests from this IP, please try again later'
+  max: 3,
+  message: 'Too many OTP requests from this IP, please try again later',
+  standardHeaders: true,
+  legacyHeaders: false
 });
 
-// Authentication routes
+
+
+// Authentication Routes
 router.post('/login', authController.login);
 router.post('/register', authController.register);
-// Add this with other authentication routes
 router.post('/google-login', authController.googleLogin);
 
-// Password routes with rate limiting
+// Password Recovery Routes
 router.post('/send-otp', otpLimiter, passwordController.sendOTP);
 router.post('/verify-otp', passwordController.verifyOTP);
 router.post('/reset-password', passwordController.resetPassword);
 router.post('/forgot-password', otpLimiter, passwordController.forgotPassword);
+
 
 module.exports = router;

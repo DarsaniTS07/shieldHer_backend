@@ -8,8 +8,8 @@ require('dotenv').config();
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   host: 'smtp.gmail.com',
-  port: 587,  // Changed from 25 to 587 (standard TLS port)
-  secure: false,  // Uncommented this line
+  port: 465,  // Changed from 25 to 587 (standard TLS port)
+  secure: true,  // Uncommented this line
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
