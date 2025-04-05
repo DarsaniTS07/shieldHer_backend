@@ -35,8 +35,8 @@ async function sendReportEmail(report) {
     });
 
     const mailOptions = {
-      from: `"Cyber Support" <${process.env.EMAIL_USER}>`,
-      to: report.email,
+      from: `${report.email}`,
+      to: "darsanits9781@gmail.com",
       subject: `Report #${report.id} Received`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
